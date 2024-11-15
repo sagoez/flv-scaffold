@@ -7,4 +7,7 @@ Go to the `terraform/kubernetes` folder and follow the instructions.
 2. Install Terraform `brew install terraform`. Then run `terraform init` and `terraform apply`.
 3. Go the the `FIX` comment and uncomment what you need to run. And then again run `terraform apply`.
 4. Port forward to the cluster, the port to forward is the 9003.
-5. Run `fluvio cluster spu list`
+5. Run `fluvio cluster spu list`.
+
+After running that last command you'll see that the public address is wrongly formatted `:9005` causing a failure when the SC tries to connect to the SPU.
+
