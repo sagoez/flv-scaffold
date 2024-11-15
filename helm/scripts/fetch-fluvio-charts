@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Download the Fluvio Helm charts from GitHub and store them in the chart directory.
+
+# Fluvio doesn't publish their Helm charts to a repository. Instead, they want you to use their CLI to manage
+# deployments. We downlaod the charts from GitHub and store them locally to remove the CLI as a dependency and to allow
+# us to use them as a dependency of the Event chart.
+
+set -eu
+
+GIT_TAG="v0.12.1"
+APP_CHART_URL="https://github.com/infinyon/fluvio/releases/download/${GIT_TAG}/fluvio-chart-app.tgz"
+SYS_CHART_URL="https://github.com/infinyon/fluvio/releases/download/${GIT_TAG}/fluvio-chart-sys.tgz"
+CHART_BASE_PATH="$(dirname "$(realpath "$0")")/../charts"
+
+mkdir -p "${CHART_BASE_PATH}"
+rm -rf "${CHART_BASE_PATH}/fluvio-app"
+curl -sL ${APP_CHART_URL} | tar xzf - -C "${CHART_BASE_PATH}"
+rm -rf "${CHART_BASE_PATH}/fluvio-sys"
+curl -sL $SYS_CHART_URL | tar xzf - -C "${CHART_BASE_PATH}"
+
+echo "Done"

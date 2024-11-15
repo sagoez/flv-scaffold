@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Run `helm lint` against the Event Helm chart.
+# Tests the chart's default values and each environment's values file.
+
+set -eu
+
+helm_base_path="$(dirname "$(realpath "$0")")/.."
+chart_path="${helm_base_path}/charts/event"
+
+echo "Running helm lint with default values"
+helm lint "${chart_path}"
+
+find "${helm_base_path}/values/event" \
+  -type f \
+  -name "*.yaml" \
+  -exec echo "Running helm lint with values file {}" \; \
+  -exec helm lint "${chart_path}" -f {} \;
